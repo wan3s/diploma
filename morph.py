@@ -15,19 +15,7 @@ def noramlizeWord (word):
     word = word.lower()
     word = ''.join(filter(lambda x: x in ALLOWED_CHARS, word))
     if len(word) > 0:
-        if os.path.exists(CACHED_LEMMS_FILE_NAME):
-            cache = eval(utils.readFromFile(CACHED_LEMMS_FILE_NAME))
-            if word in cache:
-                return cache[word]
-            normalized_word = morphAnalyzer.parse(word)[0].normal_form
-            cache[word] = normalized_word
-            utils.writeToFile(CACHED_LEMMS_FILE_NAME, str(cache))
-            return normalized_word
-        normalized_word = morphAnalyzer.parse(word)[0].normal_form
-        cache = dict()
-        cache[word] = normalized_word
-        utils.writeToFile(CACHED_LEMMS_FILE_NAME, str(cache))
-        return normalized_word
+        return morphAnalyzer.parse(word)[0].normal_form
     return ''
 
 def normalizeDoc (doc):
