@@ -27,13 +27,18 @@ def getCollections ():
 
 
 def getQuery ():
-    return input('Пользователь >>> ')
+    query = input('Пользователь >>> ')
+    importantWords = list(filter(lambda x: x[0] == IMPORTANT_WORDS_MARKER, query.split(' ')))
+    return query, importantWords
 
 def cmpKey (x):
     return x['weight']
 
 def getAnswerForQuery (query, collections, mode):
-    maxWeight = collections[0]['weight']
+    if len(collections) > 0:
+        maxWeight = collections[0]['weight']
+    else:
+        maxWeight = 0
     if mode not in MIN_WEIGHT:
         mode = SEARCH_MODEL_TFIDF
     if maxWeight < MIN_WEIGHT[mode]:
@@ -53,11 +58,12 @@ def main ():
         if arg[:argNameLen] == PARAM_SEARCH_MODEL_ARG:
             mode = arg[argNameLen:]
     collections, termsCounter = getCollections()
-    query = getQuery()
+    query, importantWords = getQuery()
     while query != STOP_SESSION_KEY_WORD:
         query = morph.normalizeDoc(query)
-        #print(query)
-        searchResult = search.getSearchResults(query, collections, termsCounter, mode)
+        importantWords = morph.normalizeImportantWords(importantWords)
+        print("Важные слова: " + str(importantWords))
+        searchResult = search.getSearchResults(query, collections, termsCounter, importantWords, mode)
 
         if searchResult == -1:
             return
@@ -65,7 +71,7 @@ def main ():
         searchResult = sorted(searchResult, key = cmpKey, reverse = True)
         maxWeight, answers = getAnswerForQuery(query, searchResult, mode)
         print('Бот (' + str(maxWeight) + ') >>> ' + answers)
-        query = getQuery()
+        query, importantWords = getQuery()
 
 
 if __name__ == "__main__":

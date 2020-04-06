@@ -18,6 +18,14 @@ def noramlizeWord (word):
         return morphAnalyzer.parse(word)[0].normal_form
     return ''
 
+def normalizeImportantWords (importantWords):
+    res_arr = []
+    for word in importantWords:
+        word = noramlizeWord(word)
+        if len(word) > 0:
+            res_arr.append(word)
+    return res_arr
+
 def normalizeDoc (doc):
     resultDoc = ''
     for word in doc.split(SPLIT_WORDS):
