@@ -62,7 +62,8 @@ def main ():
     while query != STOP_SESSION_KEY_WORD:
         query = morph.normalizeDoc(query)
         importantWords = morph.normalizeImportantWords(importantWords)
-        print("Важные слова: " + str(importantWords))
+        if (len(importantWords) > 0):
+            print("Важные слова: " + ", ".join(importantWords))
         searchResult = search.getSearchResults(query, collections, termsCounter, importantWords, mode)
 
         if searchResult == -1:
