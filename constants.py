@@ -27,8 +27,8 @@ STOP_SESSION_KEY_WORD = 'stop'
 ALLOWED_CHARS = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
 
 MIN_WEIGHT = {
-    SEARCH_MODEL_TFIDF: 0.1,
-    SEARCH_MODEL_VECT: 0.1,
+    SEARCH_MODEL_TFIDF: 0.0,
+    SEARCH_MODEL_VECT: 0.0,
     SEARCH_MODEL_LANG: 1.e-75
 }
 
