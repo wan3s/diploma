@@ -10,25 +10,36 @@ import gencollection
 import utils
 from constants import *
 
-def checkCollections ():
-    if ((not os.path.exists(COLLECTIONS_FILE_NAME)) or
-            (not os.path.exists(TF_FILE_NAME)) or
+def checkCollections (archivePath):
+    if ((not os.path.exists(archivePath + COLLECTIONS_FILE_NAME)) or
+            (not os.path.exists(archivePath + TF_FILE_NAME)) or
                 (PARAM_UPDATE_COLLECTIONS in sys.argv)):
         print('Обновление коллекций ...')
-        if gencollection.createCollection() == -1:
+        if gencollection.createCollection(archivePath + ARTICLES_DIR_NAME) == -1:
             return -1
         print('Коллекции обновлены')
 
 def getCollections ():
-    if checkCollections() == -1:
+    for i, item in enumerate(COLLECTIONS_ARCHIVE):
+        print(f"{i}: {item['name']}")
+    while True:
+        collectionId = int(input("Выберите коллекцию: "))
+        if collectionId >= 0 and collectionId < len(COLLECTIONS_ARCHIVE):
+            break
+    archivePath = COLLECTIONS_ARCHIVE[collectionId]['path']
+    if checkCollections(archivePath) == -1:
         print('ОШИБКА: коллекции не прошли проверку')
         return -1
-    return eval(utils.readFromFile(COLLECTIONS_FILE_NAME)), eval(utils.readFromFile(TF_FILE_NAME))
+    return (eval(utils.readFromFile(archivePath + COLLECTIONS_FILE_NAME)), 
+            eval(utils.readFromFile(archivePath + TF_FILE_NAME)))
 
 
 def getQuery ():
-    query = input('Пользователь >>> ')
-    importantWords = list(filter(lambda x: x[0] == IMPORTANT_WORDS_MARKER, query.split(' ')))
+    while True:
+        query = input('Пользователь >>> ').strip()
+        if len(query) > 0:
+            break
+    importantWords = list(filter(lambda x: x[:1] == IMPORTANT_WORDS_MARKER, query.split(' ')))
     return query, importantWords
 
 def cmpKey (x):

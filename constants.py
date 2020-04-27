@@ -1,6 +1,12 @@
 ARTICLES_DIR_NAME = 'articles'
 COLLECTIONS_FILE_NAME = 'collections.txt'
 TF_FILE_NAME = 'terms_freqs.txt'
+COLLECTIONS_ARCHIVE = [
+    { 'name': 'Чехов "Дама с собачкой"', 'path': 'collections/chekhov/' },
+    { 'name': 'Пушкин "Капитанская дочка"', 'path': 'collections/pushkin/' },
+    { 'name': 'Толстой "Война и мир"', 'path': 'collections/tolstoy/' },
+    { 'name': 'Википедия', 'path': 'collections/wikipedia/' },
+]
 INTERMEDIATE_RESULTS_FILE_NAME = 'intermediate_result.txt'
 CACHED_LEMMS_FILE_NAME = 'cached_lemms.txt'
 SINONIMS_ARCHIVE_PATH = '180.zip'
@@ -27,8 +33,8 @@ STOP_SESSION_KEY_WORD = 'stop'
 ALLOWED_CHARS = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
 
 MIN_WEIGHT = {
-    SEARCH_MODEL_TFIDF: 0.0,
-    SEARCH_MODEL_VECT: 0.0,
+    SEARCH_MODEL_TFIDF: 0.01,
+    SEARCH_MODEL_VECT: 0.01,
     SEARCH_MODEL_LANG: 1.e-75
 }
 

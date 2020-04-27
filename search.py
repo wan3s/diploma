@@ -33,12 +33,14 @@ def tfidfModelSearch (query, collections, termsCounter, importantWords):
         queryVector = []
         docVector = []
         docCounter = record['normalized']
+        queryN = sum(query.values())
+        docN = sum(docCounter.values())
         if not checkImportantWordsInDoc(docCounter, importantWords):
             continue
         for word in (docCounter + query):
             idf = termsCounter[word]['idf'] if word in termsCounter else 0
-            queryVector.append(query[word] * idf)
-            docVector.append(docCounter[word] * idf)
+            queryVector.append((query[word] / queryN) * idf)
+            docVector.append((docCounter[word] / docN) * idf)
         weight = cosBetweenVectors(queryVector, docVector)
         result.append({'assoc_output': record['assoc_output'], 'weight': weight})
     return result
